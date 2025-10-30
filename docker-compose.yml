@@ -1,0 +1,15 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres:16
+    container_name: turisguidedb
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: banco123
+      POSTGRES_DB: tgdb
+    ports:
+    - "2222:5432"
+    volumes:
+      -./data/postgres:/var/lib/postgresql/data
