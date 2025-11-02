@@ -33,3 +33,5 @@ build/
 .vscode/
 
 data
+
+oraclejdk-25
