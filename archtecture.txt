@@ -1,0 +1,74 @@
+turismo-app/
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/turismo/
+│   │   │       ├── TurismoAppApplication.java      # classe principal
+│   │   │       ├── common/                         # utilitários e classes genéricas
+│   │   │       │   ├── config/                     # configs globais (CORS, Security, etc.)
+│   │   │       │   ├── exception/                  # tratamento de erros globais
+│   │   │       │   └── dto/                        # DTOs comuns
+│   │   │       ├── auth/                           # módulo de autenticação/login
+│   │   │       │   ├── controller/
+│   │   │       │   │   └── AuthController.java
+│   │   │       │   ├── service/
+│   │   │       │   │   └── AuthService.java
+│   │   │       │   ├── repository/
+│   │   │       │   │   └── UserRepository.java
+│   │   │       │   ├── model/
+│   │   │       │   │   └── User.java
+│   │   │       │   └── security/
+│   │   │       │       ├── JwtFilter.java
+│   │   │       │       └── JwtUtils.java
+│   │   │       ├── user/                           # módulo de perfis de usuário (cliente/prestador)
+│   │   │       │   ├── controller/
+│   │   │       │   │   └── UserController.java
+│   │   │       │   ├── service/
+│   │   │       │   │   └── UserService.java
+│   │   │       │   ├── repository/
+│   │   │       │   │   └── ProfileRepository.java
+│   │   │       │   └── model/
+│   │   │       │       └── Profile.java
+│   │   │       ├── catalog/                        # serviços disponíveis (passagens, hospedagens, pacotes)
+│   │   │       │   ├── controller/
+│   │   │       │   │   └── CatalogController.java
+│   │   │       │   ├── service/
+│   │   │       │   │   └── CatalogService.java
+│   │   │       │   ├── repository/
+│   │   │       │   │   └── ListingRepository.java
+│   │   │       │   └── model/
+│   │   │       │       └── Listing.java
+│   │   │       ├── booking/                        # módulo de reservas/pedidos
+│   │   │       │   ├── controller/
+│   │   │       │   │   └── BookingController.java
+│   │   │       │   ├── service/
+│   │   │       │   │   └── BookingService.java
+│   │   │       │   ├── repository/
+│   │   │       │   │   └── BookingRepository.java
+│   │   │       │   └── model/
+│   │   │       │       └── Booking.java
+│   │   │       ├── payment/                        # módulo de pagamentos
+│   │   │       │   ├── controller/
+│   │   │       │   │   └── PaymentController.java
+│   │   │       │   ├── service/
+│   │   │       │   │   └── PaymentService.java
+│   │   │       │   ├── repository/
+│   │   │       │   │   └── PaymentRepository.java
+│   │   │       │   └── model/
+│   │   │       │       └── Payment.java
+│   │   │       └── notification/                   # módulo opcional (emails, sms)
+│   │   │           ├── service/
+│   │   │           │   └── NotificationService.java
+│   │   │           └── model/
+│   │   │               └── Notification.java
+│   │   ├── resources/
+│   │   │   ├── application.yml                      # configurações (Spring, DB, JWT)
+│   │   │   └── db/migration/                        # scripts Flyway
+│   │   │       ├── V1__create_users_table.sql
+│   │   │       ├── V2__create_profiles_table.sql
+│   │   │       ├── V3__create_listings_table.sql
+│   │   │       └── V4__create_bookings_table.sql
+│   └── test/
+│       └── java/com/turismo/...                     # testes unitários
+├── pom.xml
+└── README.md
