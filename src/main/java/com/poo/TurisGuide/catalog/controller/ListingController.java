@@ -24,7 +24,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/v1/listings")
+@RequestMapping("/listings")
 public class ListingController {
 
     private final ListingService listingService;
@@ -37,7 +37,7 @@ public class ListingController {
         BeanUtils.copyProperties(listingDTO, listingModel);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(this.listingService.saveListing(listingModel));
-    }
+    } 
 
     @GetMapping
     public ResponseEntity<List<ListingModel>> getListings() {

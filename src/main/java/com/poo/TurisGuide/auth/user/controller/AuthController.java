@@ -4,8 +4,13 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,28 +22,52 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.poo.TurisGuide.auth.user.dto.UserDTO;
+import com.poo.TurisGuide.auth.user.dto.AuthDTO;
+import com.poo.TurisGuide.auth.user.dto.LoginResponseDTO;
+import com.poo.TurisGuide.auth.user.dto.RegisterDTO;
+import com.poo.TurisGuide.auth.user.infra.security.TokenService;
 import com.poo.TurisGuide.auth.user.model.UserModel;
 import com.poo.TurisGuide.auth.user.service.AuthService;
 
+import ch.qos.logback.core.subst.Token;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/user")
+@RequestMapping("/auth")
 public class AuthController {
 
     final AuthService authService;
 
-    @PostMapping
-    public ResponseEntity<UserModel> saveUser(@RequestBody @Valid UserDTO userDTO){
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private TokenService tokenService;
+
+    @PostMapping("/register")
+    public ResponseEntity<UserModel> saveUser(@RequestBody @Valid RegisterDTO registerDTO){
         UserModel newUser = new UserModel();
+        BeanUtils.copyProperties(registerDTO, newUser);
 
-        BeanUtils.copyProperties(userDTO, newUser);
+        if(authService.checkExistingUser(newUser)) return ResponseEntity.badRequest().build();
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(authService.saveUser(newUser));
+        String passwordHash = new BCryptPasswordEncoder().encode(registerDTO.password());
+
+        newUser.setPassword(passwordHash);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.authService.saveUser(newUser));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthDTO authDTO){
+        var usernamePassword = new UsernamePasswordAuthenticationToken(authDTO.login(), authDTO.password());
+        var auth = this.authenticationManager.authenticate(usernamePassword);
+        
+        var token = tokenService.generateToken((UserModel) auth.getPrincipal());
+
+        return ResponseEntity.status(HttpStatus.OK).body(new LoginResponseDTO(token));
     }
 
     @DeleteMapping("/{userId}")
@@ -49,11 +78,11 @@ public class AuthController {
 
     @PutMapping("/{userId}")
     public ResponseEntity<UserModel> updateUser(
-        @RequestBody @Valid UserDTO userDTO,
+        @RequestBody @Valid AuthDTO AuthDTO,
         @PathVariable UUID userId) {
         
         UserModel updatedUser = new UserModel();
-        BeanUtils.copyProperties(userDTO, updatedUser);
+        BeanUtils.copyProperties(AuthDTO, updatedUser);
         updatedUser.setId(userId);
         
         updatedUser = this.authService.updateUser(updatedUser, userId);
