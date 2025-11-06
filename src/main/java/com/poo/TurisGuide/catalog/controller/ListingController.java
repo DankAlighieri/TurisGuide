@@ -27,7 +27,7 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/api/v1/listings")
 public class ListingController {
 
-    final ListingService listingService;
+    private final ListingService listingService;
 
     @PostMapping
     public ResponseEntity<ListingModel> saveListing(@RequestBody @Valid ListingDTO listingDTO) {
