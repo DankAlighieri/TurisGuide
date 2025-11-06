@@ -57,9 +57,9 @@ public class ListingController {
     }
 
     @DeleteMapping("/{listingId}")
-    public ResponseEntity<Void> deleteListing(@PathVariable long listingId){
+    public ResponseEntity<String> deleteListing(@PathVariable long listingId){
         listingService.deleteListing(listingId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @ExceptionHandler(Exception.class)

@@ -1,10 +1,7 @@
 package com.poo.TurisGuide.auth.user.dto;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.UUID;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
