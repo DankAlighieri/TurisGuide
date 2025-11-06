@@ -5,6 +5,9 @@ import java.util.UUID;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.poo.TurisGuide.auth.user.model.UserModel;
@@ -15,8 +18,13 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class AuthService {
+public class AuthService implements UserDetailsService{
     private final UserRepository userRepository;
+
+    public boolean checkExistingUser(UserModel userModel) {
+        if (userRepository.findByLogin(userModel.getLogin()) != null) return true;
+        return false;
+    }
 
     @Transactional
     public UserModel saveUser(UserModel userModel) {
@@ -33,8 +41,7 @@ public class AuthService {
         UserModel existingUser = userRepository.findById(userId).orElseThrow(
             () -> new IllegalArgumentException("User not found: " + userId));
 
-        // Atualiza apenas os campos que podem ser modificados
-        existingUser.setPasswordHash(updatedUser.getPasswordHash());
+        existingUser.setPassword(updatedUser.getPassword());
         existingUser.setFirstName(updatedUser.getFirstName());
         existingUser.setLastName(updatedUser.getLastName());
         existingUser.setAddress(updatedUser.getAddress());
@@ -56,5 +63,10 @@ public class AuthService {
     public UserModel getUserById(UUID userId){
         return userRepository.findById(userId).orElseThrow(
             () -> new IllegalArgumentException("User not found: " + userId));
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByLogin(username);
     }
 }
