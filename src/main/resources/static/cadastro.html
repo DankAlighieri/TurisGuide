@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TurisGuide - Cadastro</title>
+    <link rel="stylesheet" href="css/cadastro.css">
+</head>
+<body>
+<div class="container">
+    <div class="register-card">
+        <div class="logo">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                <circle cx="20" cy="20" r="18" stroke="#2C3E50" stroke-width="2"/>
+                <path d="M20 8 L20 32 M8 20 L32 20" stroke="#2C3E50" stroke-width="2"/>
+            </svg>
+            <h1>TurisGuide</h1>
+        </div>
+
+        <h2>Crie sua Conta</h2>
+
+        <form id="registerForm">
+            <div class="form-row">
+                <div class="input-group">
+                    <span class="icon">👤</span>
+                    <input type="text" name="login" placeholder="Nome de Usuário" required>
+                </div>
+
+                <div class="input-group">
+                    <span class="icon">✉️</span>
+                    <input type="email" name="email" placeholder="Email" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="input-group">
+                    <span class="icon">👨</span>
+                    <input type="text" name="firstName" placeholder="Primeiro Nome" required>
+                </div>
+
+                <div class="input-group">
+                    <span class="icon">👨</span>
+                    <input type="text" name="lastName" placeholder="Sobrenome">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <span class="icon">🔒</span>
+                <input type="password" name="password" placeholder="Senha" required>
+            </div>
+
+            <div class="input-group">
+                <span class="icon">🔒</span>
+                <input type="password" name="confirmPassword" placeholder="Confirme a Senha" required>
+            </div>
+
+            <div class="input-group">
+                <span class="icon">📍</span>
+                <input type="text" name="address" placeholder="Endereço" required>
+            </div>
+
+            <div class="form-row">
+                <div class="input-group">
+                    <span class="icon">📅</span>
+                    <input type="date" name="DOB" placeholder="Data de Nascimento" required>
+                </div>
+
+                <div class="input-group">
+                    <span class="icon">⚙️</span>
+                    <select name="role" required>
+                        <option value="">Tipo de Conta</option>
+                        <option value="USER">Usuário</option>
+                        <option value="ADMIN">Administrador</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="terms">
+                <input type="checkbox" id="terms" required>
+                <label for="terms">
+                    Eu concordo com os <a href="#">Termos de Serviço</a> e
+                    <a href="#">Política de Privacidade</a>
+                </label>
+            </div>
+
+            <button type="submit" class="btn-cadastrar">Cadastrar</button>
+
+            <div class="divider">ou</div>
+
+            <div class="social-login">
+                <button type="button" class="btn-google">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+                    Cadastrar com Google
+                </button>
+                <button type="button" class="btn-facebook">
+                    <span class="fb-icon">f</span>
+                    Cadastrar com Facebook
+                </button>
+            </div>
+
+            <p class="login-link">
+                Já tem uma conta? <a href="login.html">Faça Login</a>
+            </p>
+        </form>
+    </div>
+</div>
+
+<script src="js/cadastro.js"></script>
+</body>
+</html>
+
