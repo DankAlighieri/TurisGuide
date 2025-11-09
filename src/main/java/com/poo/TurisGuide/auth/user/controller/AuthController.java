@@ -38,7 +38,7 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/auth")
 public class AuthController {
 
-    final AuthService authService;
+    private final AuthService authService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
