@@ -33,6 +33,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/provider/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/provider/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/listings").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "provider/getall").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

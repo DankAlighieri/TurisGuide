@@ -83,4 +83,14 @@ public class ProviderController {
                     .body("Erro ao processar login: " + e.getMessage());
         }
     }
+
+    @GetMapping("/getall")
+    public ResponseEntity<?> getAllProviders() {
+        try {
+            return ResponseEntity.ok(providerService.getAllProviders());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro ao buscar providers: " + e.getMessage());
+        }
+    }
 }

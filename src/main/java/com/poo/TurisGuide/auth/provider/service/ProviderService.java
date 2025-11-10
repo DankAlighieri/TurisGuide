@@ -9,6 +9,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
+
 @Service
 public class ProviderService implements UserDetailsService {
 
@@ -31,5 +34,9 @@ public class ProviderService implements UserDetailsService {
             throw new UsernameNotFoundException("Provider not found with CNPJ: " + cnpj);
         }
         return provider;
+    }
+    @Transactional
+    public List<ProviderModel> getAllProviders(){
+        return providerRepository.findAll();
     }
 }
