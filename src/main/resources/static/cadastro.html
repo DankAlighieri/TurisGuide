@@ -20,58 +20,86 @@
         <h2>Crie sua Conta</h2>
 
         <form id="registerForm">
-            <div class="form-row">
+            <!-- Seleção de tipo de conta -->
+            <div class="input-group">
+                <span class="icon">⚙️</span>
+                <select id="accountType" name="accountType" required>
+                    <option value="">Selecione o tipo de conta</option>
+                    <option value="USER">Usuário</option>
+                    <option value="PROVIDER">Prestador</option>
+                </select>
+            </div>
+
+            <!-- Campos para Usuário -->
+            <div id="userFields" class="hidden">
+                <div class="form-row">
+                    <div class="input-group">
+                        <span class="icon">👤</span>
+                        <input type="text" id="login" name="login" placeholder="Nome de Usuário">
+                    </div>
+
+                    <div class="input-group">
+                        <span class="icon">✉️</span>
+                        <input type="email" id="email_user" name="email" placeholder="Email">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <span class="icon">👨</span>
+                        <input type="text" id="firstName" name="firstName" placeholder="Primeiro Nome">
+                    </div>
+
+                    <div class="input-group">
+                        <span class="icon">👨</span>
+                        <input type="text" id="lastName" name="lastName" placeholder="Sobrenome">
+                    </div>
+                </div>
+
                 <div class="input-group">
-                    <span class="icon">👤</span>
-                    <input type="text" name="login" placeholder="Nome de Usuário" required>
+                    <span class="icon">🔒</span>
+                    <input type="password" id="password_user" name="password" placeholder="Senha">
+                </div>
+
+                <div class="input-group">
+                    <span class="icon">📍</span>
+                    <input type="text" id="address" name="address" placeholder="Endereço">
+                </div>
+
+                <div class="form-row">
+                    <div class="input-group">
+                        <span class="icon">📅</span>
+                        <input type="date" id="DOB" name="DOB" placeholder="Data de Nascimento">
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Campos para Prestador -->
+            <div id="providerFields" class="hidden">
+                <div class="input-group">
+                    <span class="icon">🏷️</span>
+                    <input type="text" id="provider_name" name="name" placeholder="Nome do Prestador">
+                </div>
+
+                <div class="input-group">
+                    <span class="icon">🏢</span>
+                    <input type="text" id="cnpj" name="cnpj" placeholder="CNPJ">
                 </div>
 
                 <div class="input-group">
                     <span class="icon">✉️</span>
-                    <input type="email" name="email" placeholder="Email" required>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="input-group">
-                    <span class="icon">👨</span>
-                    <input type="text" name="firstName" placeholder="Primeiro Nome" required>
+                    <input type="email" id="email_provider" name="email" placeholder="Email">
                 </div>
 
                 <div class="input-group">
-                    <span class="icon">👨</span>
-                    <input type="text" name="lastName" placeholder="Sobrenome">
-                </div>
-            </div>
-
-            <div class="input-group">
-                <span class="icon">🔒</span>
-                <input type="password" name="password" placeholder="Senha" required>
-            </div>
-
-            <div class="input-group">
-                <span class="icon">🔒</span>
-                <input type="password" name="confirmPassword" placeholder="Confirme a Senha" required>
-            </div>
-
-            <div class="input-group">
-                <span class="icon">📍</span>
-                <input type="text" name="address" placeholder="Endereço" required>
-            </div>
-
-            <div class="form-row">
-                <div class="input-group">
-                    <span class="icon">📅</span>
-                    <input type="date" name="DOB" placeholder="Data de Nascimento" required>
+                    <span class="icon">🔒</span>
+                    <input type="password" id="password_provider" name="password" placeholder="Senha">
                 </div>
 
                 <div class="input-group">
-                    <span class="icon">⚙️</span>
-                    <select name="role" required>
-                        <option value="">Tipo de Conta</option>
-                        <option value="USER">Usuário</option>
-                        <option value="ADMIN">Administrador</option>
-                    </select>
+                    <span class="icon">🛠️</span>
+                    <input type="text" id="services" name="services" placeholder="Serviços oferecidos">
                 </div>
             </div>
 

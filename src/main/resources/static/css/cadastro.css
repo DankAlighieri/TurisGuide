@@ -282,6 +282,10 @@ h2 {
     display: block;
 }
 
+.hidden {
+    display: none;
+}
+
 @media (max-width: 576px) {
     .register-card {
         padding: 30px 20px;
