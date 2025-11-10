@@ -28,7 +28,6 @@ public class ListingModel implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private UUID idPrestador;
+    private UUID id;
     private double valor;
 }

@@ -14,7 +14,9 @@ import lombok.AllArgsConstructor;
 @Service
 public class ListingService {
     private final ListingRepository listingRepository;
-    
+
+
+
     @Transactional
     public ListingModel saveListing(ListingModel listingModel) {
         listingModel = listingRepository.save(listingModel);
@@ -30,12 +32,12 @@ public class ListingService {
         ListingModel existing = listingRepository.findById(listingId)
         .orElseThrow(() -> new IllegalArgumentException("Listing not found: " + listingId));
 
-        existing.setDescricao(listingModel.getDescricao());
-        existing.setIdPrestador(listingModel.getIdPrestador());
-        existing.setLocalizacao(listingModel.getLocalizacao());
-        existing.setTipo(listingModel.getTipo());
-        existing.setTitulo(listingModel.getTitulo());
-        existing.setValor(listingModel.getValor());
+//        existing.setDescricao(listingModel.getDescricao());
+//        existing.setIdPrestador(listingModel.getIdPrestador());
+//        existing.setLocalizacao(listingModel.getLocalizacao());
+//        existing.setTipo(listingModel.getTipo());
+//        existing.setTitulo(listingModel.getTitulo());
+//        existing.setValor(listingModel.getValor());
 
         return listingRepository.save(existing);
     }

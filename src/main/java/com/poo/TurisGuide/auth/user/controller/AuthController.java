@@ -46,6 +46,11 @@ public class AuthController {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
+
     @PostMapping("/register")
     public ResponseEntity<UserModel> saveUser(@RequestBody @Valid RegisterDTO registerDTO){
         UserModel newUser = new UserModel();

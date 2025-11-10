@@ -59,4 +59,9 @@ public class UserModel implements UserDetails{
         return this.login;
     }
 
+    public void setPassword(String passwordHash) {
+    }
+
+    public void setId(UUID userId) {
+    }
 }

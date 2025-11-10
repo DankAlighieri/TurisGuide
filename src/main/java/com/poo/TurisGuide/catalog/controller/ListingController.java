@@ -49,7 +49,7 @@ public class ListingController {
         ListingModel updatedListing = new ListingModel();
 
         BeanUtils.copyProperties(listingDTO, updatedListing);
-        updatedListing.setId(listingId);
+//        updatedListing.setId(listingId);
 
         updatedListing = this.listingService.updateListing(updatedListing, listingId);
 
