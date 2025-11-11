@@ -5,6 +5,7 @@ import java.util.*;
 import org.springframework.stereotype.Service;
 
 import com.poo.TurisGuide.auth.user.model.UserModel;
+import com.poo.TurisGuide.booking.dto.BookingDTO;
 import com.poo.TurisGuide.booking.model.BookingModel;
 import com.poo.TurisGuide.booking.repository.BookingRepository;
 
@@ -27,7 +28,7 @@ public class BookingService {
         bookingRepository.findById(Objects.requireNonNull(bookingId));
     }
 
-    public List<BookingModel> findByUser(UserModel user){
+    public List<BookingDTO> findByUser(UserModel user){
 
         return bookingRepository.findByUser(user);
     }

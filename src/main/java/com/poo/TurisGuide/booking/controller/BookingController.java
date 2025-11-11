@@ -62,7 +62,7 @@ public class BookingController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<List<BookingModel>> getBookingById(@PathVariable UUID userId) {
+    public ResponseEntity<List<BookingDTO>> getBookingById(@PathVariable UUID userId) {
         var user = userRepository.findById(Objects.requireNonNull(userId))
             .orElseThrow(() -> new RuntimeException()); 
         return ResponseEntity.ok(bookingService.findByUser(user));
