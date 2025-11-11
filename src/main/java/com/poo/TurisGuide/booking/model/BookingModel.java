@@ -1,4 +1,4 @@
-package com.poo.TurisGuide.auth.user.service.booking.model;
+package com.poo.TurisGuide.booking.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.poo.TurisGuide.auth.user.model.UserModel;
 import com.poo.TurisGuide.catalog.model.ListingModel;
 
@@ -30,6 +31,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class BookingModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -39,10 +41,12 @@ public class BookingModel implements Serializable {
     
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private UserModel user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "listing_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private ListingModel listing;
 
     @CreationTimestamp

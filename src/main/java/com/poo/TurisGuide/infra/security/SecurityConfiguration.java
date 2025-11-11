@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 
-package com.poo.TurisGuide.auth.user.infra.security;
+package com.poo.TurisGuide.infra.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,11 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-/**
- *
- * @author laukim
- */
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
@@ -38,7 +33,14 @@ public class SecurityConfiguration {
             .authorizeHttpRequests(authorize -> authorize
                     .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                     .requestMatchers(HttpMethod.POST, "/auth/register").permitAll() // Mudar em prod!!!!!
+                    .requestMatchers(HttpMethod.POST, "/booking").hasRole("USER")
+                    .requestMatchers(HttpMethod.POST, "/booking").hasRole("ADMIN") // mudar em prod
+                    .requestMatchers(HttpMethod.GET, "/booking/{userId}").hasRole("USER")
+                    .requestMatchers(HttpMethod.GET, "/booking/{userId}").hasRole("ADMIN") // mudar em prod
+                    .requestMatchers(HttpMethod.POST, "/listings").hasRole("PROVIDER")
                     .requestMatchers(HttpMethod.POST, "/listings").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.GET, "/listings").hasRole("PROVIDER")
+                    .requestMatchers(HttpMethod.GET, "/listings").hasRole("ADMIN")
                     .anyRequest().authenticated()
                 )
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
