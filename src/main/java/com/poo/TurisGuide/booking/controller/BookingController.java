@@ -23,19 +23,38 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import jakarta.validation.Valid;
 import lombok.Data;
 
 @RestController
 @Data
 @RequestMapping("/booking")
+@Tag(name = "Reservas", description = "Gerenciamento de reservas e agendamentos")
+@SecurityRequirement(name = "bearerAuth")
 public class BookingController {
     private final BookingService bookingService;
     private final UserRepository userRepository;
     private final ListingRepository listingRepository;
 
     @PostMapping
-    public ResponseEntity<BookingModel> createBooking(@RequestBody @Valid BookingDTO bookingDTO){
+    @Operation(summary = "Criar reserva", 
+               description = "Cria uma nova reserva para um usuário")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Reserva criada com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "404", description = "Usuário ou listing não encontrado"),
+        @ApiResponse(responseCode = "401", description = "Token inválido")
+    })
+    public ResponseEntity<BookingModel> createBooking(
+            @Parameter(description = "Dados da reserva") 
+            @RequestBody @Valid BookingDTO bookingDTO){
         var newBooking = new BookingModel();
 
         
@@ -56,13 +75,31 @@ public class BookingController {
     }
 
     @DeleteMapping("/{bookingId}")
-    public ResponseEntity<Void> deleteBooking(@PathVariable UUID bookingId) {
+    @Operation(summary = "Deletar reserva", 
+               description = "Remove uma reserva do sistema")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Reserva deletada com sucesso"),
+        @ApiResponse(responseCode = "404", description = "Reserva não encontrada"),
+        @ApiResponse(responseCode = "401", description = "Token inválido")
+    })
+    public ResponseEntity<Void> deleteBooking(
+            @Parameter(description = "ID da reserva") 
+            @PathVariable UUID bookingId) {
         bookingService.deleteBooking(bookingId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<List<BookingDTO>> getBookingById(@PathVariable UUID userId) {
+    @Operation(summary = "Buscar reservas do usuário", 
+               description = "Lista todas as reservas de um usuário específico")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Reservas encontradas"),
+        @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+        @ApiResponse(responseCode = "401", description = "Token inválido")
+    })
+    public ResponseEntity<List<BookingDTO>> getBookingById(
+            @Parameter(description = "ID do usuário") 
+            @PathVariable UUID userId) {
         var user = userRepository.findById(Objects.requireNonNull(userId))
             .orElseThrow(() -> new RuntimeException()); 
         return ResponseEntity.ok(bookingService.findByUser(user));
