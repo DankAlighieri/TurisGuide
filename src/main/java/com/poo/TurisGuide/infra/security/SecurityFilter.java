@@ -1,4 +1,4 @@
-package com.poo.TurisGuide.auth.user.infra.security;
+package com.poo.TurisGuide.infra.security;
 
 import java.io.IOException;
 

@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,11 +24,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.poo.TurisGuide.auth.user.dto.AuthDTO;
 import com.poo.TurisGuide.auth.user.dto.LoginResponseDTO;
 import com.poo.TurisGuide.auth.user.dto.RegisterDTO;
-import com.poo.TurisGuide.auth.user.infra.security.TokenService;
 import com.poo.TurisGuide.auth.user.model.UserModel;
 import com.poo.TurisGuide.auth.user.service.AuthService;
+import com.poo.TurisGuide.infra.security.TokenService;
 
-import ch.qos.logback.core.subst.Token;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
@@ -38,7 +36,7 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/auth")
 public class AuthController {
 
-    final AuthService authService;
+    private final AuthService authService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
