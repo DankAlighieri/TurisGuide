@@ -19,18 +19,37 @@ import com.poo.TurisGuide.catalog.dto.ListingDTO;
 import com.poo.TurisGuide.catalog.model.ListingModel;
 import com.poo.TurisGuide.catalog.service.ListingService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("/listings")
+@Tag(name = "Listagens", description = "Gerenciamento de hotéis, restaurantes e atividades")
 public class ListingController {
 
     private final ListingService listingService;
 
     @PostMapping
-    public ResponseEntity<ListingModel> saveListing(@RequestBody @Valid ListingDTO listingDTO) {
+    @Operation(summary = "Criar listing", 
+               description = "Cria um novo listing (requer permissão de PROVIDER ou ADMIN)")
+    @SecurityRequirement(name = "bearerAuth")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Listing criado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "401", description = "Token inválido"),
+        @ApiResponse(responseCode = "403", description = "Permissão negada")
+    })
+    public ResponseEntity<ListingModel> saveListing(
+            @Parameter(description = "Dados do listing") 
+            @RequestBody @Valid ListingDTO listingDTO) {
         ListingModel listingModel = new ListingModel();
         
         // mapeando os atributos da requisição para o model
@@ -40,12 +59,28 @@ public class ListingController {
     } 
 
     @GetMapping
+    @Operation(summary = "Listar todos os listings", 
+               description = "Retorna uma lista de todos os listings disponíveis")
+    @ApiResponse(responseCode = "200", description = "Lista recuperada com sucesso")
     public ResponseEntity<List<ListingModel>> getListings() {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(this.listingService.getAllListing());
     }
     
     @PutMapping("/{listingId}")
-    public ResponseEntity<ListingModel> updateListing(@RequestBody @Valid ListingDTO listingDTO, @PathVariable long listingId){
+    @Operation(summary = "Atualizar listing", 
+               description = "Atualiza um listing existente")
+    @SecurityRequirement(name = "bearerAuth")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Listing atualizado com sucesso"),
+        @ApiResponse(responseCode = "404", description = "Listing não encontrado"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "401", description = "Token inválido")
+    })
+    public ResponseEntity<ListingModel> updateListing(
+            @Parameter(description = "Dados atualizados do listing") 
+            @RequestBody @Valid ListingDTO listingDTO, 
+            @Parameter(description = "ID do listing") 
+            @PathVariable long listingId){
         ListingModel updatedListing = new ListingModel();
 
         BeanUtils.copyProperties(listingDTO, updatedListing);

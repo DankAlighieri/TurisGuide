@@ -20,7 +20,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.poo.TurisGuide.auth.user.roles.UserRole;
 
-@Entity(name="users")
+@Entity(name = "users")
 @Table(name = "users")
 @Data
 @AllArgsConstructor

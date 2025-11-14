@@ -1,4 +1,13 @@
+<<<<<<< HEAD:src/main/java/com/poo/TurisGuide/auth/user/infra/security/SecurityConfiguration.java
 package com.poo.TurisGuide.auth.user.infra.security;
+=======
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+
+package com.poo.TurisGuide.auth.user.security;
+>>>>>>> main:src/main/java/com/poo/TurisGuide/auth/user/security/SecurityConfiguration.java
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +34,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         return httpSecurity
+<<<<<<< HEAD:src/main/java/com/poo/TurisGuide/auth/user/infra/security/SecurityConfiguration.java
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
@@ -35,6 +45,28 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/listings").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "provider/getall").permitAll()
                         .anyRequest().authenticated()
+=======
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(authorize -> authorize
+                    .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/auth/register").permitAll() // Mudar em prod!!!!!
+                    
+                    // Swagger endpoints
+                    .requestMatchers("/swagger-ui/**").permitAll()
+                    .requestMatchers("/api-docs/**").permitAll()
+                    .requestMatchers("/swagger-ui.html").permitAll()
+                    
+                    .requestMatchers(HttpMethod.POST, "/booking").hasRole("USER")
+                    .requestMatchers(HttpMethod.POST, "/booking").hasRole("ADMIN") // mudar em prod
+                    .requestMatchers(HttpMethod.GET, "/booking/{userId}").hasRole("USER")
+                    .requestMatchers(HttpMethod.GET, "/booking/{userId}").hasRole("ADMIN") // mudar em prod
+                    .requestMatchers(HttpMethod.POST, "/listings").hasRole("PROVIDER")
+                    .requestMatchers(HttpMethod.POST, "/listings").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.GET, "/listings").hasRole("PROVIDER")
+                    .requestMatchers(HttpMethod.GET, "/listings").hasRole("ADMIN")
+                    .anyRequest().authenticated()
+>>>>>>> main:src/main/java/com/poo/TurisGuide/auth/user/security/SecurityConfiguration.java
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
