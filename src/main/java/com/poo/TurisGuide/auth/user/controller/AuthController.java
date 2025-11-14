@@ -25,8 +25,8 @@ import com.poo.TurisGuide.auth.user.dto.AuthDTO;
 import com.poo.TurisGuide.auth.user.dto.LoginResponseDTO;
 import com.poo.TurisGuide.auth.user.dto.RegisterDTO;
 import com.poo.TurisGuide.auth.user.model.UserModel;
+import com.poo.TurisGuide.auth.user.security.TokenService;
 import com.poo.TurisGuide.auth.user.service.AuthService;
-import com.poo.TurisGuide.infra.security.TokenService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
