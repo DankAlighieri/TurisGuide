@@ -28,12 +28,18 @@ import com.poo.TurisGuide.auth.user.model.UserModel;
 import com.poo.TurisGuide.auth.user.service.AuthService;
 import com.poo.TurisGuide.infra.security.TokenService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/auth")
+@Tag(name = "Autenticação de Usuários", description = "Endpoints para registro e login de usuários")
 public class AuthController {
 
     private final AuthService authService;
@@ -44,6 +50,11 @@ public class AuthController {
     @Autowired
     private TokenService tokenService;
 
+    @Operation(summary = "Registrar novo usuário", description = "Cria um novo usuário no sistema")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Usuário já existe ou dados inválidos")
+    })
     @PostMapping("/register")
     public ResponseEntity<UserModel> saveUser(@RequestBody @Valid RegisterDTO registerDTO){
         UserModel newUser = new UserModel();
@@ -58,6 +69,11 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.authService.saveUser(newUser));
     }
 
+    @Operation(summary = "Login de usuário", description = "Realiza autenticação e retorna token JWT")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Login realizado com sucesso"),
+        @ApiResponse(responseCode = "401", description = "Credenciais inválidas")
+    })
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthDTO authDTO){
         var usernamePassword = new UsernamePasswordAuthenticationToken(authDTO.login(), authDTO.password());

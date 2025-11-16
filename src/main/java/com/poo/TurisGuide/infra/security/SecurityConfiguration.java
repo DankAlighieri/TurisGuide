@@ -33,13 +33,23 @@ public class SecurityConfiguration {
             .authorizeHttpRequests(authorize -> authorize
                     .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                     .requestMatchers(HttpMethod.POST, "/auth/register").permitAll() // Mudar em prod!!!!!
+                    
+                    // Provider endpoints
+                    .requestMatchers(HttpMethod.POST, "/provider/register").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/provider/login").permitAll()
+                    
+                    // Swagger endpoints
+                    .requestMatchers("/swagger-ui/**").permitAll()
+                    .requestMatchers("/api-docs/**").permitAll()
+                    .requestMatchers("/swagger-ui.html").permitAll()
+                    
                     .requestMatchers(HttpMethod.POST, "/booking").hasRole("USER")
                     .requestMatchers(HttpMethod.POST, "/booking").hasRole("ADMIN") // mudar em prod
                     .requestMatchers(HttpMethod.GET, "/booking/{userId}").hasRole("USER")
                     .requestMatchers(HttpMethod.GET, "/booking/{userId}").hasRole("ADMIN") // mudar em prod
-                    .requestMatchers(HttpMethod.POST, "/listings").hasRole("PROVIDER")
+                    .requestMatchers(HttpMethod.POST, "/listings").hasRole("USER")
                     .requestMatchers(HttpMethod.POST, "/listings").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.GET, "/listings").hasRole("PROVIDER")
+                    .requestMatchers(HttpMethod.GET, "/listings").hasRole("USER")
                     .requestMatchers(HttpMethod.GET, "/listings").hasRole("ADMIN")
                     .anyRequest().authenticated()
                 )
