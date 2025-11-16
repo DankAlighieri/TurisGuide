@@ -1,4 +1,4 @@
-package com.poo.TurisGuide.auth.user.infra.security;
+package com.poo.TurisGuide.infra.security;
 
 import java.io.IOException;
 
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.poo.TurisGuide.auth.user.repository.UserRepository;
+import com.poo.TurisGuide.auth.provider.repository.ProviderRepository;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -24,6 +25,9 @@ public class SecurityFilter extends OncePerRequestFilter{
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private ProviderRepository providerRepository;
 
     @Override
     protected void doFilterInternal(
@@ -33,12 +37,23 @@ public class SecurityFilter extends OncePerRequestFilter{
         
             var token = recoverToken(request);
             if (token != null) {
-                var login = tokenService.validateToken(token);
-                if (!login.isEmpty()){
-                    UserDetails user = userRepository.findByLogin(login);
-
-                    var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                var identifier = tokenService.validateToken(token);
+                if (!identifier.isEmpty()){
+                    UserDetails userDetails = null;
+                    
+                    // Tenta buscar como User (por login)
+                    userDetails = userRepository.findByLogin(identifier);
+                    
+                    // Se não encontrar, tenta como Provider (por cnpj)
+                    if (userDetails == null) {
+                        userDetails = providerRepository.findByCnpj(identifier);
+                    }
+                    
+                    // Se encontrou (User ou Provider), autentica
+                    if (userDetails != null) {
+                        var authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                    }
                 }
             }
             filterChain.doFilter(request, response);
