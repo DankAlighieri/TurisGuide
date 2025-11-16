@@ -18,7 +18,6 @@
             document.getElementById('firstName').required = true;
             document.getElementById('address').required = true;
             document.getElementById('DOB').required = true;
-            document.getElementById('role_user').required = true;
 
             // Desabilitar validação dos campos de prestador
             document.getElementById('provider_name').required = false;
@@ -45,12 +44,15 @@
             document.getElementById('firstName').required = false;
             document.getElementById('address').required = false;
             document.getElementById('DOB').required = false;
-            document.getElementById('role_user').required = false;
 
         } else {
             userFields.classList.add('hidden');
             providerFields.classList.add('hidden');
         }
+    }
+
+    if (!accountType || !form) {
+        return;
     }
 
     accountType.addEventListener('change', toggleFields);
@@ -66,23 +68,53 @@
         }
 
         if (type === 'USER') {
-            const dob = document.getElementById('DOB').value;
-            const formattedDOB = dob ? formatDateToDDMMYYYY(dob) : null;
+            // Captura segura dos elementos de usuário
+            const dobInput = document.getElementById('DOB');
+            const loginInput = document.getElementById('login');
+            const passwordUserInput = document.getElementById('password_user');
+            const firstNameInput = document.getElementById('firstName');
+            const lastNameInput = document.getElementById('lastName');
+            const addressInput = document.getElementById('address');
+            const emailUserInput = document.getElementById('email_user');
+
+            if (!dobInput || !loginInput || !passwordUserInput || !firstNameInput || !lastNameInput || !addressInput || !emailUserInput) {
+                console.error('Algum campo de usuário não foi encontrado no DOM.', {
+                    dobInput,
+                    loginInput,
+                    passwordUserInput,
+                    firstNameInput,
+                    lastNameInput,
+                    addressInput,
+                    emailUserInput
+                });
+                alert('Erro interno na tela de cadastro: campo de usuário não encontrado.');
+                return;
+            }
+
+            const dobRaw = dobInput.value; // yyyy-MM-dd vindo do input type="date"
+            let dobFormatted = null;
+
+            if (dobRaw) {
+                const [year, month, day] = dobRaw.split('-');
+                dobFormatted = `${day}/${month}/${year}`; // dd/MM/yyyy
+            }
 
             const payload = {
-                login: document.getElementById('login').value.trim(),
-                password: document.getElementById('password_user').value,
-                firstName: document.getElementById('firstName').value.trim(),
-                lastName: document.getElementById('lastName').value.trim(),
-                address: document.getElementById('address').value.trim(),
-                email: document.getElementById('email_user').value.trim(),
-                DOB: formattedDOB,
-                role: document.getElementById('role_user').value
+                login: loginInput.value.trim(),
+                password: passwordUserInput.value,
+                firstName: firstNameInput.value.trim(),
+                lastName: lastNameInput.value.trim(),
+                address: addressInput.value.trim(),
+                email: emailUserInput.value.trim(),
+                DOB: dobFormatted,
+                // Você pode ajustar o role se quiser permitir escolha dinâmica.
+                // Aqui vou definir como USER por padrão; altere para 'ADMIN' se realmente quiser isso fixo.
+                role: 'USER'
             };
 
             console.log('Payload Usuário:', payload);
 
-            fetch('/api/auth/register', {
+            fetch('/auth/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -113,7 +145,7 @@
 
             console.log('Payload Prestador:', payload);
 
-            fetch('/api/auth/register/provider', {
+            fetch('/provider/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -134,13 +166,4 @@
             });
         }
     });
-
-    function formatDateToDDMMYYYY(dateString) {
-        const date = new Date(dateString);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}/${month}/${year}`;
-    }
 })();
-

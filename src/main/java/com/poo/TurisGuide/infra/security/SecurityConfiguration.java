@@ -31,18 +31,23 @@ public class SecurityConfiguration {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
+                    // Endpoints públicos de autenticação
                     .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                     .requestMatchers(HttpMethod.POST, "/auth/register").permitAll() // Mudar em prod!!!!!
-                    
+
+                    // Liberação de recursos estáticos (HTML, CSS, JS, imagens, etc.)
+                    .requestMatchers("/", "/index.html", "/login.html", "/cadastro.html").permitAll()
+                    .requestMatchers("/css/**", "/js/**", "/images/**", "/static/**").permitAll()
+
                     // Provider endpoints
                     .requestMatchers(HttpMethod.POST, "/provider/register").permitAll()
                     .requestMatchers(HttpMethod.POST, "/provider/login").permitAll()
-                    
+
                     // Swagger endpoints
                     .requestMatchers("/swagger-ui/**").permitAll()
                     .requestMatchers("/api-docs/**").permitAll()
                     .requestMatchers("/swagger-ui.html").permitAll()
-                    
+
                     .requestMatchers(HttpMethod.POST, "/booking").hasRole("USER")
                     .requestMatchers(HttpMethod.POST, "/booking").hasRole("ADMIN") // mudar em prod
                     .requestMatchers(HttpMethod.GET, "/booking/{userId}").hasRole("USER")

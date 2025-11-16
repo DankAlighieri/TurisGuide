@@ -20,7 +20,10 @@
             <li><a href="#destinos">Destinos</a></li>
             <li><a href="#pacotes">Pacotes</a></li>
             <li><a href="#sobre">Sobre Nós</a></li>
-            <li><a href="login.html" class="btn-login">Login</a></li>
+            <!-- Botão de login visível apenas quando não estiver logado -->
+            <li id="loginNavItem"><a href="login.html" class="btn-login">Login</a></li>
+            <!-- Saudação do usuário, preenchida via JS quando logado -->
+            <li id="welcomeNavItem" style="display: none;"></li>
         </ul>
     </div>
 </nav>
@@ -77,5 +80,7 @@
         </div>
     </div>
 </section>
+
+<script src="js/main.js"></script>
 </body>
 </html>
