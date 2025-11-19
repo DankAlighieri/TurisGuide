@@ -37,6 +37,7 @@ public class SecurityConfiguration {
 
                     // Liberação de recursos estáticos (HTML, CSS, JS, imagens, etc.)
                     .requestMatchers("/", "/index.html", "/login.html", "/cadastro.html").permitAll()
+                    .requestMatchers("/cadastro-servico.html", "/provedor-dashboard.html").permitAll()
                     .requestMatchers("/css/**", "/js/**", "/images/**", "/static/**").permitAll()
 
                     // Provider endpoints

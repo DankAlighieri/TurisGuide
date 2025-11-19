@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TurisGuide - Painel do Prestador</title>
+    <link rel="stylesheet" href="css/provedor-dashboard.css">
+</head>
+<body>
+<nav class="navbar">
+    <div class="container-nav">
+        <div class="logo">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
+                <path d="M20 8 L20 32 M8 20 L32 20" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <span>TurisGuide - Prestador</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#servicos">Meus Serviços</a></li>
+            <li><a href="#estatisticas">Estatísticas</a></li>
+            <li id="welcomeNavItem"></li>
+            <li><a href="#" id="logoutBtn" class="btn-logout">Sair</a></li>
+        </ul>
+    </div>
+</nav>
+
+<section class="dashboard-hero">
+    <div class="container">
+        <h1>Bem-vindo ao seu painel, <span id="providerName"></span></h1>
+        <p>Gerencie seus serviços e acompanhe suas reservas</p>
+    </div>
+</section>
+
+<section class="dashboard-actions">
+    <div class="container">
+        <div class="action-cards">
+            <div class="action-card" onclick="location.href='cadastro-servico.html'">
+                <div class="card-icon">➕</div>
+                <h3>Novo Serviço</h3>
+                <p>Cadastre um novo serviço turístico</p>
+            </div>
+            <div class="action-card" onclick="loadServices()">
+                <div class="card-icon">📋</div>
+                <h3>Meus Serviços</h3>
+                <p>Visualize e edite seus serviços</p>
+            </div>
+            <div class="action-card">
+                <div class="card-icon">📊</div>
+                <h3>Relatórios</h3>
+                <p>Acompanhe suas estatísticas</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="services-list" id="servicesList" style="display: none;">
+    <div class="container">
+        <h2>Seus Serviços</h2>
+        <div id="servicesGrid" class="services-grid"></div>
+    </div>
+</section>
+
+<script src="js/provedor-dashboard.js"></script>
+</body>
+</html>

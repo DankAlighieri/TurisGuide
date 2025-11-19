@@ -26,7 +26,7 @@
             document.getElementById('password_provider').required = false;
             document.getElementById('services').required = false;
 
-        } else if (type === 'PROVIDER') {
+        } else if (type === 'PRESTADOR') {
             providerFields.classList.remove('hidden');
             userFields.classList.add('hidden');
 
@@ -134,13 +134,14 @@
                 alert('Erro ao realizar cadastro');
             });
 
-        } else if (type === 'PROVIDER') {
+        } else if (type === 'PRESTADOR') {
             const payload = {
                 name: document.getElementById('provider_name').value.trim(),
                 cnpj: document.getElementById('cnpj').value.trim(),
                 email: document.getElementById('email_provider').value.trim(),
                 password: document.getElementById('password_provider').value,
-                services: document.getElementById('services').value.trim()
+                services: document.getElementById('services').value.trim(),
+                role: 'PRESTADOR'
             };
 
             console.log('Payload Prestador:', payload);

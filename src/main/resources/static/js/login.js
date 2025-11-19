@@ -42,15 +42,28 @@
             }
 
             if (response.ok) {
-                // Esperando que o back-end retorne { token: "jwt..." }
+                // Esperando que o back-end retorne { token: "jwt...", user: {...} }
                 const token = data && (data.token || data.accessToken || data.jwt);
+                const user = data && data.user;
+                
                 if (token) {
                     // Armazena o token para uso nas próximas requisições
                     localStorage.setItem('authToken', token);
                 }
+                
+                if (user) {
+                    // Armazena os dados do usuário
+                    localStorage.setItem('user', JSON.stringify(user));
+                }
+                
                 alert('Login realizado com sucesso!');
-                // Redirecionar para a página inicial ou dashboard
-                window.location.href = 'index.html';
+                
+                // Redireciona baseado no tipo de usuário
+                if (user && user.tipo === 'PRESTADOR') {
+                    window.location.href = 'provedor-dashboard.html';
+                } else {
+                    window.location.href = 'index.html';
+                }
             } else if (response.status === 401 || response.status === 403) {
                 alert('Credenciais inválidas. Verifique seu login e senha.');
             } else {
