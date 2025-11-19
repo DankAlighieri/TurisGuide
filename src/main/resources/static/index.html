@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TurisGuide - Sua próxima história começa aqui</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+<nav class="navbar">
+    <div class="container-nav">
+        <div class="logo">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
+                <path d="M20 8 L20 32 M8 20 L32 20" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <span>TurisGuide</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#destinos">Destinos</a></li>
+            <li><a href="#pacotes">Pacotes</a></li>
+            <li><a href="#sobre">Sobre Nós</a></li>
+            <!-- Botão de login visível apenas quando não estiver logado -->
+            <li id="loginNavItem"><a href="login.html" class="btn-login">Login</a></li>
+            <!-- Saudação do usuário, preenchida via JS quando logado -->
+            <li id="welcomeNavItem" style="display: none;"></li>
+        </ul>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1>Para onde sua próxima<br>história te leva?</h1>
+
+        <div class="search-bar">
+            <input type="text" placeholder="Para onde vamos?" class="search-input">
+            <input type="date" placeholder="Data de início" class="date-input">
+            <input type="date" placeholder="Data de Fim" class="date-input">
+            <button class="btn-search">Buscar</button>
+        </div>
+    </div>
+</section>
+
+<section class="recommended">
+    <div class="container">
+        <div class="icons-row">
+            <div class="icon-item">
+                <div class="icon-circle">🎯</div>
+            </div>
+            <div class="icon-item">
+                <div class="icon-circle">✈️</div>
+            </div>
+            <div class="icon-item">
+                <div class="icon-circle">🎫</div>
+            </div>
+        </div>
+
+        <p class="subtitle">Recomendado por viajantes como você</p>
+
+        <h2>Descubra destinos em alta</h2>
+
+        <div class="destinations-grid">
+            <div class="destination-card">
+                <img src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=600" alt="Rio de Janeiro">
+                <h3>Rio de Dienero</h3>
+            </div>
+            <div class="destination-card">
+                <img src="https://images.unsplash.com/photo-1587595431973-160d0d94add1?w=600" alt="Machbru">
+                <h3>Machbru</h3>
+            </div>
+            <div class="destination-card">
+                <img src="https://images.unsplash.com/photo-1511739001486-6bfe10ce785f?w=600" alt="Paris">
+                <h3>Paris</h3>
+            </div>
+            <div class="destination-card">
+                <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600" alt="Koyto">
+                <h3>Koyto</h3>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="js/main.js"></script>
+</body>
+</html>
