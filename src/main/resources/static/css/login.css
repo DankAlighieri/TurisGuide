@@ -75,6 +75,34 @@ h2 {
     border-color: #667eea;
 }
 
+.user-type {
+    display: flex;
+    align-items: center;
+    padding: 15px 0;
+    border: none;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 14px;
+    color: #555;
+    user-select: none;
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #3498db;
+}
+
+.checkbox-container:hover {
+    color: #2C3E50;
+}
+
 .forgot-password {
     position: absolute;
     right: 15px;

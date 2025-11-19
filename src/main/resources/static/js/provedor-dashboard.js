@@ -1,17 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
-    checkProviderAuth();
     loadProviderInfo();
 });
-
-function checkProviderAuth() {
-    const user = JSON.parse(localStorage.getItem('user') || 'null');
-    
-    if (!user || user.tipo !== 'PRESTADOR') {
-        alert('Acesso negado. Apenas prestadores podem acessar esta página.');
-        window.location.href = 'login.html';
-        return;
-    }
-}
 
 function loadProviderInfo() {
     const user = JSON.parse(localStorage.getItem('user'));
