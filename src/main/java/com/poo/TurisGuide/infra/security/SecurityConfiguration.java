@@ -34,6 +34,7 @@ public class SecurityConfiguration {
                     // Endpoints públicos de autenticação
                     .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                     .requestMatchers(HttpMethod.POST, "/auth/register").permitAll() // Mudar em prod!!!!!
+                    .requestMatchers(HttpMethod.GET, "/auth").permitAll() // Mudar em prod!!!!!
 
                     // Liberação de recursos estáticos (HTML, CSS, JS, imagens, etc.)
                     .requestMatchers("/", "/index.html", "/login.html", "/cadastro.html").permitAll()

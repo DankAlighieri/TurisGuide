@@ -52,7 +52,6 @@ public class BookingController {
     public ResponseEntity<BookingModel> createBooking(@RequestBody @Valid BookingDTO bookingDTO){
         var newBooking = new BookingModel();
 
-        
         UserModel user = userRepository.findById(Objects.requireNonNull(bookingDTO.userId()))
                 .orElseThrow(() -> new RuntimeException("User not found"));
         
@@ -64,7 +63,9 @@ public class BookingController {
         newBooking.setListing(listing);
         newBooking.setUser(user);
 
-        newBooking = bookingService.createBooking(newBooking);
+        // Define método de pagamento padrão se não vier
+        String metodo = bookingDTO.paymentMethod() != null ? bookingDTO.paymentMethod() : "PIX";
+        newBooking = bookingService.createBooking(newBooking, metodo);
 
         return ResponseEntity.ok(newBooking);
     }

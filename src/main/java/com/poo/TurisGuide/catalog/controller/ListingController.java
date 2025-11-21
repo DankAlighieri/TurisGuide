@@ -16,7 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.poo.TurisGuide.catalog.dto.ListingDTO;
+import com.poo.TurisGuide.catalog.model.Hospedagem;
 import com.poo.TurisGuide.catalog.model.ListingModel;
+import com.poo.TurisGuide.catalog.model.Passeio;
+import com.poo.TurisGuide.auth.provider.model.ProviderModel;
+import com.poo.TurisGuide.auth.provider.repository.ProviderRepository;
 import com.poo.TurisGuide.catalog.service.ListingService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,6 +39,7 @@ import lombok.AllArgsConstructor;
 public class ListingController {
 
     private final ListingService listingService;
+    private final ProviderRepository providerRepository;
 
     @Operation(summary = "Criar nova listagem", description = "Cria uma nova listagem de serviço turístico")
     @ApiResponses(value = {
@@ -43,10 +48,24 @@ public class ListingController {
     })
     @PostMapping
     public ResponseEntity<ListingModel> saveListing(@RequestBody @Valid ListingDTO listingDTO) {
-        ListingModel listingModel = new ListingModel();
+        ListingModel listingModel;
+
+        // Usando acessores de record (.tipo())
+        if ("HOSPEDAGEM".equalsIgnoreCase(listingDTO.tipo())) {
+            listingModel = new Hospedagem();
+        } else if ("PASSEIO".equalsIgnoreCase(listingDTO.tipo())) {
+            listingModel = new Passeio();
+        } else {
+            listingModel = new Hospedagem(); 
+        }
         
-        // mapeando os atributos da requisição para o model
         BeanUtils.copyProperties(listingDTO, listingModel);
+
+        if (listingDTO.idPrestador() != null) {
+             ProviderModel provider = providerRepository.findById(listingDTO.idPrestador())
+                .orElseThrow(() -> new RuntimeException("Provider not found"));
+             listingModel.setPrestador(provider);
+        }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(this.listingService.saveListing(listingModel));
     } 
@@ -65,14 +84,19 @@ public class ListingController {
     })
     @PutMapping("/{listingId}")
     public ResponseEntity<ListingModel> updateListing(@RequestBody @Valid ListingDTO listingDTO, @PathVariable long listingId){
-        ListingModel updatedListing = new ListingModel();
+        ListingModel tempModel = "PASSEIO".equalsIgnoreCase(listingDTO.tipo()) ? new Passeio() : new Hospedagem();
+        BeanUtils.copyProperties(listingDTO, tempModel);
+        
+        tempModel.setId(listingId);
+        
+        if (listingDTO.idPrestador() != null) {
+             ProviderModel provider = providerRepository.findById(listingDTO.idPrestador())
+                .orElseThrow(() -> new RuntimeException("Provider not found"));
+             tempModel.setPrestador(provider);
+        }
 
-        BeanUtils.copyProperties(listingDTO, updatedListing);
-        updatedListing.setId(listingId);
-
-        updatedListing = this.listingService.updateListing(updatedListing, listingId);
-
-        return ResponseEntity.status(HttpStatus.OK).body(updatedListing);
+        ListingModel updated = this.listingService.updateListing(tempModel, listingId);
+        return ResponseEntity.status(HttpStatus.OK).body(updated);
     }
 
     @Operation(summary = "Deletar listagem", description = "Remove uma listagem do sistema")
@@ -88,7 +112,7 @@ public class ListingController {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleException(Exception e) {
-        e.printStackTrace(); // Para ver o erro completo no log
+        e.printStackTrace();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                            .body("Erro interno: " + e.getMessage());
     }

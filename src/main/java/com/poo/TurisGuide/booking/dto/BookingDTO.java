@@ -10,7 +10,9 @@ public record BookingDTO(
     UUID userId,
     Long listingId,
     @JsonFormat(pattern = "dd/MM/yyyy") LocalDate checkIn,
-    @JsonFormat(pattern = "dd/MM/yyyy") LocalDate checkOut
+    @JsonFormat(pattern = "dd/MM/yyyy") LocalDate checkOut,
+    int guests,
+    String paymentMethod // Novo campo
 ) {
     
 }

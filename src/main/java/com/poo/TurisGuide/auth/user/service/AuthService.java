@@ -22,8 +22,7 @@ public class AuthService implements UserDetailsService{
     private final UserRepository userRepository;
 
     public boolean checkExistingUser(UserModel userModel) {
-        if (userRepository.findByLogin(userModel.getLogin()) != null) return true;
-        return false;
+        return userRepository.findByLogin(userModel.getLogin()) != null;
     }
 
     @Transactional
