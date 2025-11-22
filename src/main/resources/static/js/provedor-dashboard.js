@@ -3,20 +3,21 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function loadProviderInfo() {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user) {
-        document.getElementById('providerName').textContent = user.nome || user.username;
-        document.getElementById('welcomeNavItem').textContent = `Olá, ${user.nome || user.username}`;
+    const providerId = JSON.parse(localStorage.getItem('providerId'));
+    const provider = JSON.parse(localStorage.getItem('provider'));
+    if (provider) {
+        document.getElementById('providerName').textContent = provider.nome || provider.username;
+        document.getElementById('welcomeNavItem').textContent = `Olá, ${provider.nome || provider.username}`;
     }
 }
 
 function loadServices() {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const providerId = JSON.parse(localStorage.getItem('providerId'));
     
-    fetch(`/api/catalog/provider/${user.id}`)
+    fetch(`/listings/${providerId}`)
         .then(response => {
             if (!response.ok) {
-                throw new Error('Erro ao carregar serviços');
+                throw new Error('Erro no retorno da chamada');
             }
             return response.json();
         })
@@ -43,13 +44,13 @@ function displayServices(services) {
     
     grid.innerHTML = services.map(service => `
         <div class="service-card">
-            <img src="${service.imagem || 'https://via.placeholder.com/400x300?text=Sem+Imagem'}" alt="${service.nome}">
+            <img src="${service.imagem || 'https://via.placeholder.com/400x300?text=Sem+Imagem'}" alt="${service.titulo}">
             <div class="service-info">
                 <span class="service-type">${formatTipoServico(service.tipo)}</span>
-                <h3>${service.nome}</h3>
+                <h3>${service.titulo}</h3>
                 <p>${service.descricao ? (service.descricao.substring(0, 100) + (service.descricao.length > 100 ? '...' : '')) : ''}</p>
                 <div class="service-details">
-                    <span>💰 R$ ${formatPrice(service.preco)}</span>
+                    <span>💰 R$ ${formatPrice(service.valor)}</span>
                     <span>📍 ${service.localizacao}</span>
                 </div>
                 <div class="service-actions">
@@ -85,7 +86,7 @@ function editService(id) {
 function deleteService(id) {
     if (!confirm('Tem certeza que deseja excluir este serviço?')) return;
     
-    fetch(`/api/catalog/${id}`, {
+    fetch(`/listings/${id}`, {
         method: 'DELETE'
     })
     .then(response => {

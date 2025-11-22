@@ -25,7 +25,10 @@ public class ProviderModel extends Usuario {
         this.email = data.email();
         this.password = data.password();
         this.services = data.services();
+        
+        // AQUI ESTÁ A DEFINIÇÃO DA ROLE DO PRESTADOR
         this.role = "PRESTADOR";
+        
         this.login = data.cnpj(); // Usando CNPJ como login padrão para providers
     }
 }

@@ -1,6 +1,7 @@
 package com.poo.TurisGuide.catalog.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
@@ -61,8 +62,8 @@ public class ListingController {
         
         BeanUtils.copyProperties(listingDTO, listingModel);
 
-        if (listingDTO.idPrestador() != null) {
-             ProviderModel provider = providerRepository.findById(listingDTO.idPrestador())
+        if (listingDTO.providerId() != null) {
+             ProviderModel provider = providerRepository.findById(listingDTO.providerId())
                 .orElseThrow(() -> new RuntimeException("Provider not found"));
              listingModel.setPrestador(provider);
         }
@@ -70,11 +71,11 @@ public class ListingController {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.listingService.saveListing(listingModel));
     } 
 
-    @Operation(summary = "Listar todas as listagens", description = "Retorna todas as listagens cadastradas")
+    @Operation(summary = "Listar todas as listagens", description = "Retorna todas as listagens cadastradas para um determinado provedor")
     @ApiResponse(responseCode = "200", description = "Lista de listagens retornada com sucesso")
-    @GetMapping
-    public ResponseEntity<List<ListingModel>> getListings() {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(this.listingService.getAllListing());
+    @GetMapping("/{providerId}")
+    public ResponseEntity<List<ListingModel>> getProviderListings(@PathVariable UUID providerId) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(this.listingService.getListingsByProvider(providerId));
     }
     
     @Operation(summary = "Atualizar listagem", description = "Atualiza uma listagem existente")
@@ -82,15 +83,16 @@ public class ListingController {
         @ApiResponse(responseCode = "200", description = "Listagem atualizada com sucesso"),
         @ApiResponse(responseCode = "404", description = "Listagem não encontrada")
     })
+
     @PutMapping("/{listingId}")
-    public ResponseEntity<ListingModel> updateListing(@RequestBody @Valid ListingDTO listingDTO, @PathVariable long listingId){
+    public ResponseEntity<ListingModel> updateListing(@RequestBody @Valid ListingDTO listingDTO, @PathVariable UUID listingId){
         ListingModel tempModel = "PASSEIO".equalsIgnoreCase(listingDTO.tipo()) ? new Passeio() : new Hospedagem();
         BeanUtils.copyProperties(listingDTO, tempModel);
         
         tempModel.setId(listingId);
         
-        if (listingDTO.idPrestador() != null) {
-             ProviderModel provider = providerRepository.findById(listingDTO.idPrestador())
+        if (listingDTO.providerId() != null) {
+             ProviderModel provider = providerRepository.findById(listingDTO.providerId())
                 .orElseThrow(() -> new RuntimeException("Provider not found"));
              tempModel.setPrestador(provider);
         }
@@ -105,7 +107,7 @@ public class ListingController {
         @ApiResponse(responseCode = "404", description = "Listagem não encontrada")
     })
     @DeleteMapping("/{listingId}")
-    public ResponseEntity<String> deleteListing(@PathVariable long listingId){
+    public ResponseEntity<String> deleteListing(@PathVariable UUID listingId){
         listingService.deleteListing(listingId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

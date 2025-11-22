@@ -1,6 +1,7 @@
 package com.poo.TurisGuide.catalog.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -21,12 +22,12 @@ public class ListingService {
         return listingModel;
     }
 
-    public List<ListingModel> getAllListing() {
-        return listingRepository.findAll();
+    public List<ListingModel> getListingsByProvider(UUID providerId) {
+        return listingRepository.findByPrestadorId(providerId);
     }
 
     @Transactional
-    public ListingModel updateListing(ListingModel listingModel, long listingId) {
+    public ListingModel updateListing(ListingModel listingModel, UUID listingId) {
         ListingModel existing = listingRepository.findById(listingId)
         .orElseThrow(() -> new IllegalArgumentException("Listing not found: " + listingId));
 
@@ -40,15 +41,11 @@ public class ListingService {
             existing.setPrestador(listingModel.getPrestador());
         }
 
-        // Nota: Alterar o 'tipo' (classe) de uma entidade existente é complexo no JPA/Hibernate.
-        // Geralmente não se altera o tipo de um registro na tabela Single Table via update simples.
-        // Ignoramos setTipo() aqui.
-
         return listingRepository.save(existing);
     }
 
     @Transactional
-    public void deleteListing(long listingId) {
+    public void deleteListing(UUID listingId) {
         listingRepository.deleteById(listingId);
     }
 }

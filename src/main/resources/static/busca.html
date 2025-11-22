@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleção de Destino - TurisGuide</title>
+    <link rel="stylesheet" href="css/index.css">
+    <style>
+        .results-container { padding: 40px 20px; max-width: 1200px; margin: 0 auto; }
+        .listing-card { display: flex; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-bottom: 20px; transition: transform 0.2s; cursor: pointer; }
+        .listing-card:hover { transform: translateY(-5px); }
+        .listing-img { width: 300px; height: 200px; object-fit: cover; }
+        .listing-content { padding: 20px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .listing-header { display: flex; justify-content: space-between; align-items: start; }
+        .listing-price { font-size: 1.5rem; font-weight: bold; color: #2C3E50; }
+        .tag { background: #667eea; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <!-- Navbar simplificada -->
+    <nav class="navbar">
+        <div class="container-nav">
+            <div class="logo"><span>TurisGuide</span></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Voltar</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="results-container">
+        <h1>Resultados para: <span id="searchTerm">...</span></h1>
+        <div id="resultsList">Carregando...</div>
+    </div>
+
+    <script src="js/busca.js">
+        
+    </script>
+</body>
+</html>

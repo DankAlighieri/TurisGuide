@@ -34,12 +34,13 @@ public class SecurityConfiguration {
                     // Endpoints públicos de autenticação
                     .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                     .requestMatchers(HttpMethod.POST, "/auth/register").permitAll() // Mudar em prod!!!!!
-                    .requestMatchers(HttpMethod.GET, "/auth").permitAll() // Mudar em prod!!!!!
 
-                    // Liberação de recursos estáticos (HTML, CSS, JS, imagens, etc.)
+                    // Recursos estáticos (HTML, CSS, JS, imagens, etc.)
                     .requestMatchers("/", "/index.html", "/login.html", "/cadastro.html").permitAll()
                     .requestMatchers("/cadastro-servico.html", "/provedor-dashboard.html").permitAll()
+                    .requestMatchers("/busca.html", "/reservar.html", "/minhas-reservas.html").permitAll()
                     .requestMatchers("/css/**", "/js/**", "/images/**", "/static/**").permitAll()
+                    
 
                     // Provider endpoints
                     .requestMatchers(HttpMethod.POST, "/provider/register").permitAll()
@@ -50,14 +51,15 @@ public class SecurityConfiguration {
                     .requestMatchers("/api-docs/**").permitAll()
                     .requestMatchers("/swagger-ui.html").permitAll()
 
-                    .requestMatchers(HttpMethod.POST, "/booking").hasRole("USER")
-                    .requestMatchers(HttpMethod.POST, "/booking").hasRole("ADMIN") // mudar em prod
-                    .requestMatchers(HttpMethod.GET, "/booking/{userId}").hasRole("USER")
-                    .requestMatchers(HttpMethod.GET, "/booking/{userId}").hasRole("ADMIN") // mudar em prod
-                    .requestMatchers(HttpMethod.POST, "/listings").hasRole("USER")
-                    .requestMatchers(HttpMethod.POST, "/listings").hasRole("ADMIN")
-                    .requestMatchers(HttpMethod.GET, "/listings").hasRole("USER")
-                    .requestMatchers(HttpMethod.GET, "/listings").hasRole("ADMIN")
+                    .requestMatchers(HttpMethod.POST, "/booking").hasAnyRole("USER", "ADMIN")
+                    .requestMatchers(HttpMethod.GET, "/booking/{userId}").hasAnyRole("USER", "ADMIN")
+
+
+                    .requestMatchers(HttpMethod.POST, "/listings").permitAll()                   
+                    .requestMatchers(HttpMethod.POST, "/listings").hasAnyRole("PRESTADOR", "ADMIN")                    
+                    // Alterado para permitAll para que a busca (busca.html) funcione sem login
+                    .requestMatchers(HttpMethod.GET, "/listings/{providerId}").permitAll()
+                    
                     .anyRequest().authenticated()
                 )
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

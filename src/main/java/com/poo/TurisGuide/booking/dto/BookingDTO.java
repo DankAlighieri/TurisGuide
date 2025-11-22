@@ -8,11 +8,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public record BookingDTO(
     UUID userId,
-    Long listingId,
+    UUID listingId,
     @JsonFormat(pattern = "dd/MM/yyyy") LocalDate checkIn,
     @JsonFormat(pattern = "dd/MM/yyyy") LocalDate checkOut,
     int guests,
-    String paymentMethod // Novo campo
+    String paymentMethod
 ) {
     
 }
