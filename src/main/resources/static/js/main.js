@@ -1,8 +1,11 @@
 // Lógica de navbar: mostra botão de login quando não logado
-// e saudação "Bem-vindo, <firstName>" quando logado.
+// e nome do usuário com menu dropdown quando logado.
 (function() {
     const loginNavItem = document.getElementById('loginNavItem');
     const welcomeNavItem = document.getElementById('welcomeNavItem');
+    const userName = document.getElementById('userName');
+    const userDropdown = document.getElementById('userDropdown');
+    const logoutBtn = document.getElementById('logoutBtn');
 
     if (!loginNavItem || !welcomeNavItem) {
         return;
@@ -15,7 +18,7 @@
         // Não logado: mostra botão de login, esconde saudação
         loginNavItem.style.display = '';
         welcomeNavItem.style.display = 'none';
-        welcomeNavItem.textContent = '';
+        if (userName) userName.textContent = '';
         return;
     }
 
@@ -37,9 +40,39 @@
     // Se não conseguir extrair o nome, mostra uma saudação genérica
     const displayName = firstName || 'usuário';
 
-    // Logado: esconde botão de login e mostra saudação
+    // Logado: esconde botão de login e mostra nome do usuário
     loginNavItem.style.display = 'none';
     welcomeNavItem.style.display = '';
-    welcomeNavItem.textContent = `Bem-vindo, ${displayName}`;
+    if (userName) {
+        userName.textContent = displayName;
+    }
+
+    // Toggle dropdown ao clicar no nome
+    if (userName && userDropdown) {
+        userName.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            userDropdown.classList.toggle('show');
+        });
+
+        // Fecha o dropdown ao clicar fora
+        document.addEventListener('click', function(e) {
+            if (!welcomeNavItem.contains(e.target)) {
+                userDropdown.classList.remove('show');
+            }
+        });
+    }
+
+    // Logout
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        });
+    }
 })();
+
+
 

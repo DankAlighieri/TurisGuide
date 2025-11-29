@@ -1,12 +1,49 @@
 document.addEventListener('DOMContentLoaded', function() {
     loadProviderInfo();
+    setupUserMenu();
 });
+
+function setupUserMenu() {
+    const userName = document.getElementById('userName');
+    const userDropdown = document.getElementById('userDropdown');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const welcomeNavItem = document.getElementById('welcomeNavItem');
+
+    // Toggle dropdown ao clicar no nome
+    if (userName && userDropdown) {
+        userName.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            userDropdown.classList.toggle('show');
+        });
+
+        // Fecha o dropdown ao clicar fora
+        document.addEventListener('click', function(e) {
+            if (welcomeNavItem && !welcomeNavItem.contains(e.target)) {
+                userDropdown.classList.remove('show');
+            }
+        });
+    }
+
+    // Logout
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('authToken');
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        });
+    }
+}
 
 function loadProviderInfo() {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user) {
         document.getElementById('providerName').textContent = user.nome || user.username;
-        document.getElementById('welcomeNavItem').textContent = `Olá, ${user.nome || user.username}`;
+        const userName = document.getElementById('userName');
+        if (userName) {
+            userName.textContent = user.nome || user.username;
+        }
     }
 }
 

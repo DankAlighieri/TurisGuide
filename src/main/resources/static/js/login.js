@@ -55,8 +55,15 @@
                     }
 
                     if (provider) {
-                        // Armazena os dados do provedor
-                        localStorage.setItem('provider', JSON.stringify(provider));
+                        // Armazena os dados do provedor usando a chave 'user' para compatibilidade
+                        // com o código existente do dashboard
+                        localStorage.setItem('user', JSON.stringify({
+                            id: provider.id,
+                            nome: provider.name,
+                            username: provider.cnpj,
+                            email: provider.email,
+                            services: provider.services
+                        }));
                     }
 
                     alert('Login realizado com sucesso!');
@@ -67,7 +74,7 @@
                 } else if (response.status === 401 || response.status === 403) {
                     alert('Credenciais inválidas. Verifique seu login e senha.');
                 } else {
-                    alert('Erro ao realizar login: ' + (text || 'Erro desconhecido'));
+                    alert('Erro ao realizar login: ' + (responseText || 'Erro desconhecido'));
                 }
             })
         } else {

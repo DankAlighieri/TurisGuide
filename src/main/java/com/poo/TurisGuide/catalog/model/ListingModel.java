@@ -21,14 +21,24 @@ public class ListingModel implements Serializable{
 
     private static final long serialVersionUID = 1L;
     
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    // Campos originais
     private String titulo;
     private String descricao;
     private String localizacao;
     private String tipo;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
     private UUID idPrestador;
     private double valor;
+
+    // Novos campos para serviços
+    private String nome;
+    private Double preco;
+    private Integer capacidade;
+    private String endereco;
+    private String imagem;
+    private String comodidades;
+    private UUID provedorId;
 }

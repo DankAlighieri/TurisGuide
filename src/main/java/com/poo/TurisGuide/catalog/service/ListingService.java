@@ -25,6 +25,10 @@ public class ListingService {
         return listingRepository.findAll();
     }
 
+    public List<ListingModel> getListingsByProviderId(java.util.UUID providerId) {
+        return listingRepository.findByProvedorId(providerId);
+    }
+
     @Transactional
     public ListingModel updateListing(ListingModel listingModel,long listingId) {
         ListingModel existing = listingRepository.findById(listingId)

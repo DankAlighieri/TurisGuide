@@ -43,6 +43,12 @@ public class SecurityConfiguration {
                     // Provider endpoints
                     .requestMatchers(HttpMethod.POST, "/provider/register").permitAll()
                     .requestMatchers(HttpMethod.POST, "/provider/login").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/provider/getall").permitAll()
+
+                    // Catalog endpoints (serviços) - permitir acesso público ou autenticado
+                    .requestMatchers(HttpMethod.GET, "/api/catalog/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/catalog").permitAll()
+                    .requestMatchers(HttpMethod.DELETE, "/api/catalog/**").permitAll()
 
                     // Swagger endpoints
                     .requestMatchers("/swagger-ui/**").permitAll()

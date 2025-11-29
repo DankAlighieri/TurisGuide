@@ -9,6 +9,6 @@ import java.util.UUID;
 
 @Repository
 public interface ProviderRepository extends JpaRepository<ProviderModel, UUID> {
-    UserDetails findByCnpj(String cnpj);
+    ProviderModel findByCnpj(String cnpj);
     boolean existsByCnpj(String cnpj);
 }

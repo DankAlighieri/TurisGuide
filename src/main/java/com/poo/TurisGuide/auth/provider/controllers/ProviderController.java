@@ -68,25 +68,49 @@ public class ProviderController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid ProviderDTO data) {
         try {
+            System.out.println("=== TENTATIVA DE LOGIN DO PRESTADOR ===");
+            System.out.println("CNPJ recebido: " + data.cnpj());
+
             // Busca o provider pelo CNPJ
             ProviderModel provider = providerService.findByCnpj(data.cnpj());
             
             if (provider == null) {
+                System.out.println("❌ Provider NÃO encontrado para CNPJ: " + data.cnpj());
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                         .body("CNPJ ou senha inválidos");
             }
+
+            System.out.println("✅ Provider encontrado: " + provider.getName());
+            System.out.println("ID: " + provider.getId());
+            System.out.println("Email: " + provider.getEmail());
+            System.out.println("Verificando senha...");
 
             // Verifica a senha manualmente
             if (!passwordEncoder.matches(data.password(), provider.getPassword())) {
+                System.out.println("❌ Senha INCORRETA!");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                         .body("CNPJ ou senha inválidos");
             }
 
+            System.out.println("✅ Senha CORRETA!");
+            System.out.println("Gerando token...");
+
             // Gera o token
             String token = tokenServiceProvider.generateToken(provider);
-            return ResponseEntity.ok(new LoginResponseProviderDto(token));
+
+            System.out.println("✅ Token gerado com sucesso");
+
+            // Cria o objeto de resposta com token e dados do provider
+            LoginResponseProviderDto.ProviderData providerData =
+                    LoginResponseProviderDto.ProviderData.fromModel(provider);
+
+            System.out.println("✅ Login realizado com sucesso para: " + provider.getName());
+
+            return ResponseEntity.ok(new LoginResponseProviderDto(token, providerData));
 
         } catch (Exception e) {
+            System.out.println("❌ ERRO NO LOGIN: " + e.getMessage());
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Erro ao processar login: " + e.getMessage());
         }

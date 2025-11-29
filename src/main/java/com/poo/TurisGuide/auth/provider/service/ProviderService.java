@@ -28,7 +28,7 @@ public class ProviderService {
     }
 
     public ProviderModel findByCnpj(String cnpj) {
-        return (ProviderModel) providerRepository.findByCnpj(cnpj);
+        return providerRepository.findByCnpj(cnpj);
     }
 
     /*
