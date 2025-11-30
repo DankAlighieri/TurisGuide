@@ -39,6 +39,9 @@ public class SecurityConfiguration {
                     .requestMatchers("/", "/index.html", "/login.html", "/cadastro.html").permitAll()
                     .requestMatchers("/cadastro-servico.html", "/provedor-dashboard.html").permitAll()
                     .requestMatchers("/busca.html", "/reservar.html", "/minhas-reservas.html").permitAll()
+                    .requestMatchers("/pacotes.html", "/reservar-pacote.html").permitAll()
+                    .requestMatchers("/editar-servico.html", "/gerenciar-reservas.html").permitAll()
+                    .requestMatchers("/usuario-dashboard.html").permitAll()
                     .requestMatchers("/css/**", "/js/**", "/images/**", "/static/**").permitAll()
                     
 
