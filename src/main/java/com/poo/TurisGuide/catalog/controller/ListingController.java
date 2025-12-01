@@ -77,7 +77,14 @@ public class ListingController {
     public ResponseEntity<List<ListingModel>> getProviderListings(@PathVariable UUID providerId) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(this.listingService.getListingsByProvider(providerId));
     }
-    
+
+    @Operation(summary = "Listar todos os serviços", description = "Retorna todos os serviços cadastrados no sistema")
+    @ApiResponse(responseCode = "200", description = "Lista de serviços retornada com sucesso")
+    @GetMapping
+    public ResponseEntity<List<ListingModel>> getAllListings() {
+        return ResponseEntity.status(HttpStatus.OK).body(this.listingService.getAllListings());
+    }
+
     @Operation(summary = "Atualizar listagem", description = "Atualiza uma listagem existente")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Listagem atualizada com sucesso"),

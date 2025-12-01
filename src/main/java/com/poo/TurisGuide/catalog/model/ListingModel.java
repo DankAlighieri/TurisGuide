@@ -18,12 +18,15 @@ import com.poo.TurisGuide.auth.provider.model.ProviderModel;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "tipo")
 @JsonSubTypes({
     @JsonSubTypes.Type(value = Hospedagem.class, name = "HOSPEDAGEM"),
-    @JsonSubTypes.Type(value = Passeio.class, name = "PASSEIO")
+    @JsonSubTypes.Type(value = Passeio.class, name = "PASSEIO"),
+    @JsonSubTypes.Type(value = Transporte.class, name = "TRANSPORTE"),
+    @JsonSubTypes.Type(value = Alimentacao.class, name = "ALIMENTACAO"),
+    @JsonSubTypes.Type(value = Evento.class, name = "EVENTO")
 })
 @Data
 @NoArgsConstructor
 public abstract class ListingModel implements Serializable {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;

@@ -43,7 +43,7 @@ public class SecurityConfiguration {
                     .requestMatchers("/editar-servico.html", "/gerenciar-reservas.html").permitAll()
                     .requestMatchers("/usuario-dashboard.html").permitAll()
                     .requestMatchers("/css/**", "/js/**", "/images/**", "/static/**").permitAll()
-                    
+
 
                     // Provider endpoints
                     .requestMatchers(HttpMethod.POST, "/provider/register").permitAll()
@@ -57,12 +57,15 @@ public class SecurityConfiguration {
                     .requestMatchers(HttpMethod.POST, "/booking").hasAnyRole("USER", "ADMIN")
                     .requestMatchers(HttpMethod.GET, "/booking/{userId}").hasAnyRole("USER", "ADMIN")
 
+                    // API pública de serviços para busca
+                    .requestMatchers(HttpMethod.GET, "/api/services").permitAll()
 
                     .requestMatchers(HttpMethod.POST, "/listings").permitAll()                   
                     .requestMatchers(HttpMethod.POST, "/listings").hasAnyRole("PRESTADOR", "ADMIN")                    
                     // Alterado para permitAll para que a busca (busca.html) funcione sem login
                     .requestMatchers(HttpMethod.GET, "/listings/{providerId}").permitAll()
-                    
+                    .requestMatchers(HttpMethod.GET, "/listings").permitAll()
+
                     .anyRequest().authenticated()
                 )
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
