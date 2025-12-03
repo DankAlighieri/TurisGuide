@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Finalizar Reserva - TurisGuide</title>
+    <link rel="stylesheet" href="css/index.css">
+    <style>
+        .booking-container {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 30px;
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .main-service {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        .service-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .service-header h1 {
+            font-size: 2rem;
+            color: #2C3E50;
+            margin-bottom: 10px;
+        }
+        .service-meta {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #666;
+            font-size: 0.95rem;
+        }
+        .service-tag {
+            background: #667eea;
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .service-image-gallery {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .main-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+        .secondary-images {
+            display: grid;
+            gap: 10px;
+        }
+        .secondary-images img {
+            width: 100%;
+            height: 145px;
+            object-fit: cover;
+        }
+        .service-description {
+            margin-bottom: 25px;
+        }
+        .service-description h3 {
+            font-size: 1.2rem;
+            color: #2C3E50;
+            margin-bottom: 12px;
+        }
+        .service-description p {
+            color: #555;
+            line-height: 1.7;
+        }
+        .service-highlights {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .highlight-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .highlight-icon {
+            font-size: 1.5rem;
+        }
+        .payment-section {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #f0f0f0;
+        }
+        .payment-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: #2C3E50;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2C3E50;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .btn-pay {
+            width: 100%;
+            padding: 16px;
+            background: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+        .btn-pay:hover {
+            background: #229954;
+        }
+        
+        /* Sidebar de Resumo */
+        .booking-summary {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+        .summary-title {
+            font-size: 1.4rem;
+            color: #2C3E50;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .price-display {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px;
+            border-radius: 12px;
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .price-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+        .price-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        .price-per {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+        .summary-details {
+            margin-bottom: 20px;
+        }
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+        .summary-label {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        .summary-value {
+            font-weight: 600;
+            color: #2C3E50;
+        }
+        .total-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .total-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2C3E50;
+        }
+        .total-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #27ae60;
+        }
+        
+        /* Sugestões */
+        .suggestions-sidebar {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+        .suggestions-sidebar h4 {
+            font-size: 1.1rem;
+            color: #2C3E50;
+            margin-bottom: 15px;
+        }
+        .suggestion-card {
+            background: white;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        .suggestion-card:hover {
+            border-color: #667eea;
+            transform: translateX(5px);
+        }
+        .suggestion-card strong {
+            display: block;
+            color: #2C3E50;
+            margin-bottom: 5px;
+        }
+        .suggestion-card small {
+            color: #27ae60;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 968px) {
+            .booking-container {
+                grid-template-columns: 1fr;
+            }
+            .booking-summary {
+                position: static;
+            }
+            .service-image-gallery {
+                grid-template-columns: 1fr;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .service-highlights {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container-nav">
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                    <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
+                    <path d="M20 8 L20 32 M8 20 L32 20" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span>TurisGuide</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="busca.html">← Voltar à Busca</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="booking-container">
+        <!-- Coluna Principal: Detalhes e Formulário -->
+        <div class="main-service">
+            <div class="service-header">
+                <h1 id="serviceTitle">Carregando...</h1>
+                <div class="service-meta">
+                    <span class="service-tag" id="serviceType">...</span>
+                    <div class="meta-item">
+                        <span>📍</span>
+                        <span id="serviceLocation">...</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>👥</span>
+                        <span id="serviceCapacity">...</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="service-image-gallery">
+                <img id="mainImage" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600" class="main-image" alt="Serviço">
+                <div class="secondary-images">
+                    <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=300" alt="Imagem 2">
+                    <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=300" alt="Imagem 3">
+                </div>
+            </div>
+
+            <div class="service-description">
+                <h3>Sobre este serviço</h3>
+                <p id="serviceDescription">Carregando descrição...</p>
+            </div>
+
+            <div class="service-highlights">
+                <div class="highlight-item">
+                    <span class="highlight-icon">✓</span>
+                    <span>Cancelamento grátis</span>
+                </div>
+                <div class="highlight-item">
+                    <span class="highlight-icon">⚡</span>
+                    <span>Confirmação instantânea</span>
+                </div>
+                <div class="highlight-item">
+                    <span class="highlight-icon">🏆</span>
+                    <span>Melhor custo-benefício</span>
+                </div>
+                <div class="highlight-item">
+                    <span class="highlight-icon">💬</span>
+                    <span>Suporte 24h</span>
+                </div>
+            </div>
+
+            <div class="payment-section">
+                <h3>📝 Informações da Reserva</h3>
+                <form id="bookingForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Data de Início *</label>
+                            <input type="date" id="startDate" required min="">
+                        </div>
+                        <div class="form-group">
+                            <label>Data de Término</label>
+                            <input type="date" id="endDate" min="">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Horário de Início</label>
+                            <input type="time" id="startTime" value="09:00">
+                        </div>
+                        <div class="form-group">
+                            <label>Número de Pessoas *</label>
+                            <input type="number" id="guests" value="1" min="1" max="50" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Observações / Pedidos Especiais</label>
+                        <textarea id="observations" rows="3" placeholder="Ex: alergias alimentares, preferências, necessidades especiais..."></textarea>
+                    </div>
+
+                    <h3 style="margin-top: 30px; margin-bottom: 20px;">💳 Pagamento</h3>
+                    
+                    <div class="form-group">
+                        <label>Método de Pagamento *</label>
+                        <select id="paymentMethod" required>
+                            <option value="">Selecione...</option>
+                            <option value="PIX">PIX (Instantâneo - 5% desconto)</option>
+                            <option value="CREDITO">Cartão de Crédito</option>
+                            <option value="DEBITO">Cartão de Débito</option>
+                            <option value="BOLETO">Boleto Bancário</option>
+                        </select>
+                    </div>
+
+                    <div id="cardFields" style="display: none;">
+                        <div class="form-group">
+                            <label>Nome no Cartão</label>
+                            <input type="text" id="cardName" placeholder="Como está no cartão">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Número do Cartão</label>
+                                <input type="text" id="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19">
+                            </div>
+                            <div class="form-group">
+                                <label>Validade</label>
+                                <input type="text" id="cardExpiry" placeholder="MM/AA" maxlength="5">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>CVV</label>
+                                <input type="text" id="cardCVV" placeholder="123" maxlength="3">
+                            </div>
+                            <div class="form-group">
+                                <label>Parcelas</label>
+                                <select id="installments">
+                                    <option value="1">1x sem juros</option>
+                                    <option value="2">2x sem juros</option>
+                                    <option value="3">3x sem juros</option>
+                                    <option value="6">6x com juros</option>
+                                    <option value="12">12x com juros</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-pay">🔒 Confirmar e Pagar</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Sidebar: Resumo da Reserva -->
+        <aside>
+            <div class="booking-summary">
+                <h3 class="summary-title">Resumo da Reserva</h3>
+                
+                <div class="price-display">
+                    <div class="price-label">Preço por pessoa</div>
+                    <div class="price-value" id="pricePerPerson">R$ 0,00</div>
+                    <div class="price-per">por pessoa</div>
+                </div>
+
+                <div class="summary-details">
+                    <div class="summary-item">
+                        <span class="summary-label">Serviço</span>
+                        <span class="summary-value" id="summaryService">-</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Data</span>
+                        <span class="summary-value" id="summaryDate">-</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Pessoas</span>
+                        <span class="summary-value" id="summaryGuests">1</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Subtotal</span>
+                        <span class="summary-value" id="summarySubtotal">R$ 0,00</span>
+                    </div>
+                </div>
+
+                <div class="total-section">
+                    <div class="total-row">
+                        <span class="total-label">Total</span>
+                        <span class="total-value" id="totalPrice">R$ 0,00</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="suggestions-sidebar">
+                <h4>💡 Complete sua experiência</h4>
+                <div id="suggestionsList">
+                    <!-- Sugestões carregadas via JS -->
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <script src="js/reservar.js"></script>
+</body>
+</html>

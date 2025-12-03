@@ -1,17 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
-    checkProviderAuth();
     setupForm();
 });
-
-function checkProviderAuth() {
-    const user = JSON.parse(localStorage.getItem('user') || 'null');
-    
-    if (!user || user.tipo !== 'PRESTADOR') {
-        alert('Acesso negado.');
-        window.location.href = 'login.html';
-        return;
-    }
-}
 
 function setupForm() {
     document.getElementById('servicoForm').addEventListener('submit', function(e) {
@@ -21,34 +10,26 @@ function setupForm() {
 }
 
 function cadastrarServico() {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const providerId = JSON.parse(localStorage.getItem('providerId'));
     
     const servico = {
-        nome: document.getElementById('nome').value,
+        titulo: document.getElementById('nome').value,
         descricao: document.getElementById('descricao').value,
         tipo: document.getElementById('tipoServico').value,
-        preco: parseFloat(document.getElementById('preco').value),
-        capacidade: parseInt(document.getElementById('capacidade').value),
+        valor: parseFloat(document.getElementById('preco').value),
         localizacao: document.getElementById('localizacao').value,
         endereco: document.getElementById('endereco').value || '',
         imagem: document.getElementById('imagem').value || '',
-        comodidades: document.getElementById('comodidades').value || '',
-        provedorId: user.id
+        providerId: providerId
     };
     
-    // Validação básica
-    if (!servico.nome || !servico.descricao || !servico.tipo || !servico.preco || !servico.capacidade || !servico.localizacao) {
+    if (!servico.titulo || !servico.descricao || !servico.tipo || !servico.valor || !servico.localizacao) {
         alert('Por favor, preencha todos os campos obrigatórios.');
         return;
     }
     
-    if (servico.preco <= 0) {
+    if (servico.valor <= 0) {
         alert('O preço deve ser maior que zero.');
-        return;
-    }
-    
-    if (servico.capacidade <= 0) {
-        alert('A capacidade deve ser maior que zero.');
         return;
     }
     
@@ -58,7 +39,7 @@ function cadastrarServico() {
     submitBtn.textContent = 'Cadastrando...';
     submitBtn.disabled = true;
     
-    fetch('/api/catalog', {
+    fetch('/listings', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -74,7 +55,7 @@ function cadastrarServico() {
             throw new Error('Erro ao cadastrar serviço');
         }
     })
-    .then(data => {
+    .then(() => {
         alert('Serviço cadastrado com sucesso!');
         window.location.href = 'provedor-dashboard.html';
     })

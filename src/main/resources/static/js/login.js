@@ -26,8 +26,6 @@
                 password: password
             };
 
-            console.log('Payload de login:', payload);
-
             fetch('/provider/login', {
                 method: 'POST',
                 headers: {
@@ -47,16 +45,18 @@
                 if (response.ok) {
                     // Esperando que o back-end retorne { token: "jwt...", provider: {...} }
                     const token = data && (data.token || data.accessToken || data.jwt);
-                    const provider = data && data.provider;
+                    const providerId = data && data.providerId;
 
                     if (token) {
                         // Armazena o token para uso nas próximas requisições
                         localStorage.setItem('authToken', token);
                     }
 
-                    if (provider) {
+
+                    if (providerId) {
                         // Armazena os dados do provedor
-                        localStorage.setItem('provider', JSON.stringify(provider));
+                        localStorage.setItem('providerCNPJ', JSON.stringify(payload.cnpj));
+                        localStorage.setItem('providerId', JSON.stringify(providerId));
                     }
 
                     alert('Login realizado com sucesso!');
@@ -77,8 +77,6 @@
                 password: password
             };
 
-            console.log('Payload de login:', payload);
-        
             fetch('/auth/login', {
                 method: 'POST',
                 headers: {
@@ -96,21 +94,21 @@
                 }
 
                 if (response.ok) {
-
-                    // Esperando que o back-end retorne { token: "jwt...", user: {...} }
                     const token = data && (data.token || data.accessToken || data.jwt);
-                    const user = data && data.user;
+                    const userId = data && data.userId;
 
                     if (token) {
                         // Armazena o token para uso nas próximas requisições
                         localStorage.setItem('authToken', token);
                     }
+                    
+                    localStorage.setItem('user', JSON.stringify(payload.login));
 
-                    if (user) {
+                    if (userId) {
                         // Armazena os dados do usuário
-                        localStorage.setItem('user', JSON.stringify(user));
+                        localStorage.setItem('userId', JSON.stringify(userId));
                     }
-
+                    
                     alert('Login realizado com sucesso!');
 
                     window.location.href = 'index.html';
@@ -128,4 +126,3 @@
         }
     });
 })();
-

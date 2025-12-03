@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Minhas Reservas - TurisGuide</title>
+    <link rel="stylesheet" href="css/index.css">
+    <style>
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        .booking-card { background: white; border: 1px solid #eee; border-radius: 10px; padding: 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .booking-info h3 { margin: 0 0 10px 0; color: #2C3E50; }
+        .booking-actions button { padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer; margin-left: 10px; }
+        .btn-cancel { background: #e74c3c; color: white; }
+        .btn-edit { background: #f39c12; color: white; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container-nav">
+            <div class="logo"><span>TurisGuide</span></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Voltar ao Início</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Minhas Reservas</h1>
+        <div id="bookingsList">Carregando...</div>
+    </div>
+
+    <script src="js/minhas-reservas.js"></script>
+</body>
+</html>

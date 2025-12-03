@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Painel - TurisGuide</title>
+    <link rel="stylesheet" href="css/index.css">
+    <style>
+        .dashboard-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 60px 20px;
+            color: white;
+            text-align: center;
+        }
+        .dashboard-hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        .action-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+        .action-card h3 {
+            font-size: 1.3rem;
+            color: #2C3E50;
+            margin-bottom: 10px;
+        }
+        .action-card p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        .recent-section {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .recent-section h2 {
+            font-size: 1.8rem;
+            color: #2C3E50;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .booking-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.2s;
+        }
+        .booking-item:hover {
+            background: #f8f9fa;
+        }
+        .booking-item:last-child {
+            border-bottom: none;
+        }
+        .booking-info h4 {
+            font-size: 1.1rem;
+            color: #2C3E50;
+            margin-bottom: 5px;
+        }
+        .booking-meta {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .status-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .status-confirmed {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+        @media (max-width: 768px) {
+            .dashboard-hero h1 {
+                font-size: 2rem;
+            }
+            .booking-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container-nav">
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                    <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="2"/>
+                    <path d="M20 8 L20 32 M8 20 L32 20" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span>TurisGuide</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Início</a></li>
+                <li><a href="pacotes.html">Pacotes</a></li>
+                <li><a href="busca.html">Buscar Serviços</a></li>
+                <li><a href="#" id="logoutBtn">Sair</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="dashboard-hero">
+        <h1>Olá, <span id="userName">Usuário</span>! 👋</h1>
+        <p>Bem-vindo ao seu painel pessoal</p>
+    </div>
+
+    <div class="dashboard-container">
+        <div class="quick-actions">
+            <div class="action-card" onclick="location.href='busca.html'">
+                <div class="card-icon">🔍</div>
+                <h3>Buscar Serviços</h3>
+                <p>Encontre hospedagens, passeios e muito mais</p>
+            </div>
+            
+            <div class="action-card" onclick="location.href='pacotes.html'">
+                <div class="card-icon">🎁</div>
+                <h3>Ver Pacotes</h3>
+                <p>Pacotes turísticos completos e exclusivos</p>
+            </div>
+            
+            <div class="action-card" onclick="location.href='minhas-reservas.html'">
+                <div class="card-icon">📅</div>
+                <h3>Minhas Reservas</h3>
+                <p>Gerencie todas as suas reservas</p>
+            </div>
+            
+            <div class="action-card" onclick="alert('Em desenvolvimento')">
+                <div class="card-icon">⭐</div>
+                <h3>Favoritos</h3>
+                <p>Seus destinos e serviços salvos</p>
+            </div>
+        </div>
+
+        <div class="recent-section">
+            <h2>📋 Reservas Recentes</h2>
+            <div id="recentBookings">
+                <p style="text-align: center; color: #999; padding: 30px;">Carregando...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            document.getElementById('userName').textContent = user.name || user.email;
+            
+            loadRecentBookings();
+            
+            document.getElementById('logoutBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('user');
+                localStorage.removeItem('authToken');
+                window.location.href = 'index.html';
+            });
+        });
+        
+        function loadRecentBookings() {
+            const user = JSON.parse(localStorage.getItem('user'));
+            
+            fetch(`/api/bookings/user/${user.id}`, {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('authToken')
+                }
+            })
+            .then(res => res.json())
+            .then(bookings => {
+                const container = document.getElementById('recentBookings');
+                
+                if (!bookings || bookings.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <p>📭 Você ainda não tem reservas</p>
+                            <p>Explore nossos serviços e faça sua primeira reserva!</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                const recent = bookings.slice(0, 5);
+                container.innerHTML = recent.map(booking => `
+                    <div class="booking-item">
+                        <div class="booking-info">
+                            <h4>${booking.serviceName || 'Serviço'}</h4>
+                            <p class="booking-meta">
+                                📅 ${formatDate(booking.startDateTime)} | 
+                                💰 R$ ${(booking.totalAmount || 0).toFixed(2)}
+                            </p>
+                        </div>
+                        <span class="status-badge ${booking.status === 'CONFIRMED' ? 'status-confirmed' : 'status-pending'}">
+                            ${booking.status === 'CONFIRMED' ? '✅ Confirmada' : '⏳ Pendente'}
+                        </span>
+                    </div>
+                `).join('');
+            })
+            .catch(err => {
+                console.error('Erro ao carregar reservas:', err);
+                document.getElementById('recentBookings').innerHTML = 
+                    '<p style="text-align: center; color: #e74c3c;">Erro ao carregar reservas</p>';
+            });
+        }
+        
+        function formatDate(dateStr) {
+            if (!dateStr) return 'N/A';
+            try {
+                return new Date(dateStr).toLocaleDateString('pt-BR');
+            } catch (e) {
+                return dateStr;
+            }
+        }
+    </script>
+</body>
+</html>

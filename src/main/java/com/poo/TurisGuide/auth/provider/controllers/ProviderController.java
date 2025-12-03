@@ -81,10 +81,12 @@ public class ProviderController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                         .body("CNPJ ou senha inválidos");
             }
-
             // Gera o token
             String token = tokenServiceProvider.generateToken(provider);
-            return ResponseEntity.ok(new LoginResponseProviderDto(token));
+
+            var providerId = provider.getId();
+
+            return ResponseEntity.ok(new LoginResponseProviderDto(token, providerId));
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

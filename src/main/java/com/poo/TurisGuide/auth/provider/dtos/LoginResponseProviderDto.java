@@ -1,6 +1,6 @@
 package com.poo.TurisGuide.auth.provider.dtos;
 
-import jakarta.validation.constraints.NotBlank;
+import java.util.UUID;
 
-public record LoginResponseProviderDto(String token) {
+public record LoginResponseProviderDto(String token, UUID providerId) {
 }

@@ -1,6 +1,7 @@
 package com.poo.TurisGuide.catalog.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -21,27 +22,34 @@ public class ListingService {
         return listingModel;
     }
 
-    public List<ListingModel> getAllListing() {
+    public List<ListingModel> getListingsByProvider(UUID providerId) {
+        return listingRepository.findByPrestadorId(providerId);
+    }
+
+    public List<ListingModel> getAllListings() {
         return listingRepository.findAll();
     }
 
     @Transactional
-    public ListingModel updateListing(ListingModel listingModel,long listingId) {
+    public ListingModel updateListing(ListingModel listingModel, UUID listingId) {
         ListingModel existing = listingRepository.findById(listingId)
         .orElseThrow(() -> new IllegalArgumentException("Listing not found: " + listingId));
 
         existing.setDescricao(listingModel.getDescricao());
-        existing.setIdPrestador(listingModel.getIdPrestador());
         existing.setLocalizacao(listingModel.getLocalizacao());
-        existing.setTipo(listingModel.getTipo());
         existing.setTitulo(listingModel.getTitulo());
         existing.setValor(listingModel.getValor());
+        
+        // Atualiza o prestador (objeto) em vez do ID
+        if (listingModel.getPrestador() != null) {
+            existing.setPrestador(listingModel.getPrestador());
+        }
 
         return listingRepository.save(existing);
     }
 
     @Transactional
-    public void deleteListing(long listingId) {
+    public void deleteListing(UUID listingId) {
         listingRepository.deleteById(listingId);
     }
 }

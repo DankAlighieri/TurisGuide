@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -31,7 +32,6 @@ import com.poo.TurisGuide.infra.security.TokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -45,10 +45,10 @@ public class AuthController {
     private final AuthService authService;
 
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
     @Autowired
-    private TokenService tokenService;
+    private final TokenService tokenService;
 
     @Operation(summary = "Registrar novo usuário", description = "Cria um novo usuário no sistema")
     @ApiResponses(value = {
@@ -81,7 +81,11 @@ public class AuthController {
         
         var token = tokenService.generateToken((UserModel) auth.getPrincipal());
 
-        return ResponseEntity.status(HttpStatus.OK).body(new LoginResponseDTO(token));
+        var user = (UserModel) authService.loadUserByUsername(authDTO.login());
+
+        var userId = user.getId();
+
+        return ResponseEntity.status(HttpStatus.OK).body(new LoginResponseDTO(token, userId));
     }
 
     @DeleteMapping("/{userId}")
@@ -107,6 +111,11 @@ public class AuthController {
     @GetMapping("/{userId}")
     public ResponseEntity<UserModel> getUserById(@PathVariable UUID userId){
         return ResponseEntity.status(HttpStatus.OK).body(authService.getUserById(userId));
+    }
+
+    @GetMapping("/{userLogin}")
+    public ResponseEntity<UserDetails> getUserByLogin(@PathVariable String userLogin){
+        return ResponseEntity.status(HttpStatus.OK).body(authService.loadUserByUsername(userLogin));
     }
         
     @GetMapping
